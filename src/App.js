@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import './App.css';
 import ShapeBuilder from './ShapeBuilder';
-import { Snackbar, SnackbarContent } from '@mui/material';
+import { Snackbar } from '@mui/material';
+import { LETTERS_6X6 } from '../data';
 
 export default function App() {
-  const [arrayInput, setArrayInput] = useState('');
+  const [arrayInput, setArrayInput] = useState(LETTERS_6X6.A);
   const [showShape, setShowShape] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -21,29 +22,33 @@ export default function App() {
           autoHideDuration={6000}
           onClose={() => setShowSnackbar(false)}
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          message="please enter a valid 2D array!"
+          message="Something went wrong try again!"
           ContentProps={{ sx: { backgroundColor: 'red', color: 'white' } }}
         />
       )}
       <h1>Welcome to Shape Builder</h1>
-      <p>Start building your shapes!</p>
+      <p>Start building your shapes and play the Game!</p>
       <div className="input-container">
         <form className="inputForm" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Enter your 2d array"
-            defaultValue={arrayInput}
+          <select
+            defaultValue={Object.keys(LETTERS_6X6)[0]}
             onChange={(e) => {
-              setArrayInput(e.target.value);
+              setArrayInput(LETTERS_6X6[e.target.value]);
             }}
-          />
+          >
+            {Object.keys(LETTERS_6X6).map((key) => (
+              <option key={key} value={key}>
+                {key}
+              </option>
+            ))}
+          </select>
 
           <button type="submit">Build Shape</button>
           <button
             type="reset"
             onClick={() => {
               setShowShape(false);
-              setArrayInput('');
+              setArrayInput(LETTERS_6X6);
             }}
           >
             Clear Shape
@@ -51,16 +56,10 @@ export default function App() {
         </form>
       </div>
       {!showShape && (
-        <>
-          <p>
-            example: Enter an array with 1 and 0 like this [ [0, 1, 0], [1, 1,
-            1], [0, 1, 0] ]
-          </p>
-          <p>
-            To see the above example shape, click "Build Shape" or Enter a new
-            2D Array with "1" and "0"
-          </p>
-        </>
+        <p>
+          Select a letter from the dropdown and click on "Build Shape" to start
+          playing!
+        </p>
       )}
       {showShape && (
         <ShapeBuilder

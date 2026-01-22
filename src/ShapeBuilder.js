@@ -2,35 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 
 export default function ShapeBuilder({ arrayInput, setShowSnackbar }) {
   const [isValid, setIsValid] = useState(true);
-
-  // Validate input and parse array
-  const arrayInputParsed = useMemo(() => {
-    try {
-      if (!arrayInput || !arrayInput.startsWith('[')) {
-        setIsValid(false);
-        return null;
-      }
-
-      const parsed = JSON.parse(arrayInput);
-      const isValid2dArray =
-        Array.isArray(parsed) &&
-        parsed.every(
-          (row) =>
-            Array.isArray(row) && row.every((cell) => cell === 0 || cell === 1)
-        );
-
-      if (!isValid2dArray) {
-        setIsValid(false);
-        return null;
-      }
-
-      setIsValid(true);
-      return parsed;
-    } catch (error) {
-      setIsValid(false);
-      return null;
-    }
-  }, [arrayInput]);
+  const arrayInputParsed = arrayInput;
+  if (!arrayInputParsed) {
+    setIsValid(false);
+  }
 
   // Show snackbar when validation fails
   useEffect(() => {
