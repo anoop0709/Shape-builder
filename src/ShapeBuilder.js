@@ -1,33 +1,51 @@
 import { useEffect, useMemo, useState } from 'react';
 
-export default function ShapeBuilder({ arrayInput }) {
+export default function ShapeBuilder({ arrayInput, setShowSnackbar }) {
+  const [isValid, setIsValid] = useState(true);
+
+  // Validate input and parse array
   const arrayInputParsed = useMemo(() => {
     try {
+      if (!arrayInput || !arrayInput.startsWith('[')) {
+        setIsValid(false);
+        return null;
+      }
+
       const parsed = JSON.parse(arrayInput);
-      if (
+      const isValid2dArray =
         Array.isArray(parsed) &&
         parsed.every(
           (row) =>
             Array.isArray(row) && row.every((cell) => cell === 0 || cell === 1)
-        )
-      ) {
-        return parsed;
+        );
+
+      if (!isValid2dArray) {
+        setIsValid(false);
+        return null;
       }
-      return [
-        [0, 1, 0],
-        [1, 1, 1],
-        [0, 1, 0],
-      ];
-    } catch (e) {
-      return [
-        [0, 1, 0],
-        [1, 1, 1],
-        [0, 1, 0],
-      ];
+
+      setIsValid(true);
+      return parsed;
+    } catch (error) {
+      setIsValid(false);
+      return null;
     }
   }, [arrayInput]);
+
+  // Show snackbar when validation fails
+  useEffect(() => {
+    if (!isValid) {
+      setShowSnackbar(true);
+    }
+  }, [isValid, setShowSnackbar]);
+
+  if (!isValid || !arrayInputParsed) {
+    return null;
+  }
+
   const [divsClicked, setDivsClicked] = useState(new Set());
   const [unloading, setUnloading] = useState(false);
+
   const flatternArray = useMemo(
     () => arrayInputParsed.flat(Infinity),
     [arrayInputParsed]
@@ -35,8 +53,9 @@ export default function ShapeBuilder({ arrayInput }) {
 
   const numberOfDivs = useMemo(
     () => flatternArray.reduce((acc, val) => (acc += val), 0),
-    [arrayInputParsed]
+    [flatternArray]
   );
+
   const unLoad = () => {
     setUnloading(true);
     const keys = Array.from(divsClicked.keys());
@@ -67,10 +86,10 @@ export default function ShapeBuilder({ arrayInput }) {
   };
 
   useEffect(() => {
-    if (divsClicked.size === numberOfDivs) {
+    if (divsClicked.size === numberOfDivs && numberOfDivs > 0) {
       unLoad();
     }
-  }, [divsClicked]);
+  }, [divsClicked, numberOfDivs]);
 
   return (
     <>

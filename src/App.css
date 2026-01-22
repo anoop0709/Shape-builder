@@ -53,7 +53,7 @@ p {
   width: 300;
   height: 300;
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 10px;
 }
 .shape-item-div {

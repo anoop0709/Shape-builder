@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import './App.css';
 import ShapeBuilder from './ShapeBuilder';
+import { Snackbar, SnackbarContent } from '@mui/material';
 
 export default function App() {
   const [arrayInput, setArrayInput] = useState('');
   const [showShape, setShowShape] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,6 +15,16 @@ export default function App() {
 
   return (
     <div className="container">
+      {showSnackbar && (
+        <Snackbar
+          open={showSnackbar}
+          autoHideDuration={6000}
+          onClose={() => setShowSnackbar(false)}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          message="please enter a valid 2D array!"
+          ContentProps={{ sx: { backgroundColor: 'red', color: 'white' } }}
+        />
+      )}
       <h1>Welcome to Shape Builder</h1>
       <p>Start building your shapes!</p>
       <div className="input-container">
@@ -50,7 +62,12 @@ export default function App() {
           </p>
         </>
       )}
-      {showShape && <ShapeBuilder arrayInput={arrayInput} />}
+      {showShape && (
+        <ShapeBuilder
+          arrayInput={arrayInput}
+          setShowSnackbar={setShowSnackbar}
+        />
+      )}
     </div>
   );
 }
