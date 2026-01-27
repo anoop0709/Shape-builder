@@ -45,8 +45,6 @@ This creates an optimized production build in the `dist` folder.
 
 ## Description
 
-- user can input any 2d array with values 1 and 0
-- app will build a shape with that 2d array
-- user can click on any box and once completed all the boxes will unclick in the same   order of click.
-
-- ex: user create an array of [[1,1,1], [1,0,0], [1,1,1]] will create a C shape then only clicable in 1 values.
+- user can select an Alphabet from the drop down
+- app will build a shape of that Alphabet
+- user can click on any box and once completed all the boxes will unclick in the same order of click.
