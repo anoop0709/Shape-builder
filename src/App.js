@@ -5,7 +5,7 @@ import { Snackbar } from '@mui/material';
 import { LETTERS_6X6 } from '../data';
 
 export default function App() {
-  const [arrayInput, setArrayInput] = useState(LETTERS_6X6.A);
+  const [arrayInput, setArrayInput] = useState(LETTERS_6X6['A']);
   const [showShape, setShowShape] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -48,7 +48,7 @@ export default function App() {
             type="reset"
             onClick={() => {
               setShowShape(false);
-              setArrayInput(LETTERS_6X6);
+              setArrayInput(LETTERS_6X6['A']);
             }}
           >
             Clear Shape
